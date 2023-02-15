@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">TollApps</string>
+    <string name="apply">Jelentkezés</string>
+    <string name="save_btn">Mentés</string>
+    <string name="cancel_btn">Mégse</string>
+    <string name="ok_btn">Ok</string>
+    <string name="title_no_user_found">Nem létezik ilyen felhasználó</string>
+    <string name="message_try_again">Próbálkozz újra más névvel, vagy ellenőrizd, hogy helyesen írtad be a neved!</string>
+    <string name="required_field">Kötelező mező!</string>
+    <string name="message_require_name">Kötelező kitöltened a neved!</string>
+    <string name="name_text">Hogy hívnak?</string>
+    <string name="next_btn">Tovább</string>
+    <string name="total_members">%1$d fő</string>
+    <string name="notification_name">Értesítés</string>
+    <string name="notification_details">Értesítés részletek</string>
+    <string name="notification_message">Ne felejts el jelentkezni a következő játékra!</string>
+    <string name="choose_option">Válassz opciót!</string>
+    <string name="come_alone">Egyedül jövök</string>
+    <string name="plus_one">Plusz 1 főt hozok</string>
+    <string name="plus_two">Plusz 2 főt hozok</string>
+    <string name="current_date">Jelelegi időpont:</string>
+    <string name="coming">Akik jönnek:</string>
+</resources>

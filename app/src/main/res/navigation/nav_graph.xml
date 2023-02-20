@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_mainFr_to_newMemberDialogFr"
             app:destination="@id/newMemberDialogFRagment" />
+        <action
+            android:id="@+id/action_mainFr_to_loginFr"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <dialog

@@ -1,5 +1,6 @@
 package hu.zsof.tollapps.ui.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +25,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false)
 
@@ -37,6 +38,17 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupBindings() {
+        val sharedPref = activity?.getSharedPreferences(
+            getString(R.string.shared_pref_key),
+            Context.MODE_PRIVATE,
+        )
+
+        val storedName = sharedPref?.getString(getString(R.string.shared_pref_name_key), "")
+        if (!storedName.isNullOrEmpty()) {
+            LocalDataStateService.name = storedName
+            safeNavigate(LoginFragmentDirections.actionLoginFrToMainFr())
+        }
+
         binding.apply {
             nextButton.setOnClickListener {
                 val name = nameTextInput.text?.trim().toString()
@@ -49,6 +61,13 @@ class LoginFragment : Fragment() {
                                 safeNavigate(LoginFragmentDirections.actionLoginFrToMainFr())
                             }
                         }
+                    }
+                }
+
+                if (sharedPref != null) {
+                    with(sharedPref.edit()) {
+                        putString(getString(R.string.shared_pref_name_key), name)
+                        apply()
                     }
                 }
             }

@@ -20,4 +20,6 @@
     <string name="plus_two">Plusz 2 főt hozok</string>
     <string name="current_date">Jelelegi időpont:</string>
     <string name="coming">Akik jönnek:</string>
+    <string name="shared_pref_key">SharedPref</string>
+    <string name="shared_pref_name_key">Name</string>
 </resources>

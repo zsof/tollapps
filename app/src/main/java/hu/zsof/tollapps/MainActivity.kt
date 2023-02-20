@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                         appUpdateInfo,
                         AppUpdateType.IMMEDIATE,
                         starterForInAppUpdate,
-                        MONITOR_UPDATE_REQUEST
+                        MONITOR_UPDATE_REQUEST,
                     )
                 }
             }
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         Snackbar.make(
             findViewById(R.id.main_activity),
             "Egy új verzió lett letöltve.",
-            Snackbar.LENGTH_INDEFINITE
+            Snackbar.LENGTH_INDEFINITE,
         ).apply {
             setAction("RESTART") { appUpdateManager.completeUpdate() }
             setActionTextColor(Color.BLACK)
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     appUpdateInfo,
                     AppUpdateType.IMMEDIATE,
                     this,
-                    MONITOR_UPDATE_REQUEST
+                    MONITOR_UPDATE_REQUEST,
                 )
                 Log.d("InAppUpdate", "Update is available")
             } else {
@@ -144,7 +144,9 @@ class MainActivity : AppCompatActivity() {
         val intentFlag =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 PendingIntent.FLAG_IMMUTABLE
-            } else 0
+            } else {
+                0
+            }
         val pendingIntent = PendingIntent.getBroadcast(this, 0, broadcastIntent, intentFlag)
 
         val timeOfAlarmHour = 20
@@ -167,7 +169,7 @@ class MainActivity : AppCompatActivity() {
     private fun setAlarmManagerRepeat(
         context: Context,
         timeOfAlarm: Long,
-        pendingIntent: PendingIntent
+        pendingIntent: PendingIntent,
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         if (System.currentTimeMillis() < timeOfAlarm) {
@@ -175,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                 AlarmManager.RTC,
                 timeOfAlarm,
                 AlarmManager.INTERVAL_DAY * 7,
-                pendingIntent
+                pendingIntent,
             )
         }
     }

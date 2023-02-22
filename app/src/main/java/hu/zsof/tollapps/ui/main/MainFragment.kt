@@ -22,6 +22,7 @@ import hu.zsof.tollapps.adapter.MainAdapter
 import hu.zsof.tollapps.databinding.FragmentMainBinding
 import hu.zsof.tollapps.network.repository.LocalDataStateService
 import hu.zsof.tollapps.safeNavigate
+import hu.zsof.tollapps.util.Constants
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +33,7 @@ class MainFragment : Fragment(), RemoveButtonClickListener {
     private lateinit var adapter: MainAdapter
     private val viewModel: MainViewModel by viewModels()
     private var fabVisible = false
+    private var totalMembers = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +41,6 @@ class MainFragment : Fragment(), RemoveButtonClickListener {
         savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
-        adapter = MainAdapter(this)
 
         return binding.root
     }
@@ -52,11 +53,10 @@ class MainFragment : Fragment(), RemoveButtonClickListener {
     }
 
     private fun setupBindings() {
-        val sharedPref = activity?.getSharedPreferences(
-            getString(R.string.shared_pref_key),
+        val sharedPref = requireActivity().getSharedPreferences(
+            Constants.SHARED_PREF_KEY,
             Context.MODE_PRIVATE,
         )
-
         binding.apply {
             currentUser.text = LocalDataStateService.name
             swipeRefresh.setOnRefreshListener {
@@ -66,7 +66,7 @@ class MainFragment : Fragment(), RemoveButtonClickListener {
             exitIcon.setOnClickListener {
                 if (sharedPref != null) {
                     with(sharedPref.edit()) {
-                        putString(getString(R.string.shared_pref_name_key), null)
+                        putString(Constants.SHARED_PREF_USER_NAME, null)
                         apply()
                     }
                 }
@@ -98,9 +98,11 @@ class MainFragment : Fragment(), RemoveButtonClickListener {
                         R.style.AlertDialogCustom,
                     ),
                 )
-                    .setTitle("Mennyibe kerültek a pályák összesen?")
+                    .setTitle(getString(R.string.room_costs))
                     .setView(input)
-                    .setPositiveButton("Számol!") { dialog, _ ->
+                    .setPositiveButton(getString(R.string.count)) { dialog, _ ->
+                        LocalDataStateService.price.value = Integer.parseInt(input.text.toString())
+
                         dialog.cancel()
                     }
                     .create()
@@ -113,46 +115,62 @@ class MainFragment : Fragment(), RemoveButtonClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun subscribeToObservers() {
-        viewModel.apply {
-            getEvent(LocalDataStateService.name)
-            event.observe(viewLifecycleOwner) { event ->
-                adapter.memberList = event.participants
-                binding.recyclerMember.adapter = adapter
+        LocalDataStateService.price.observe(viewLifecycleOwner) {
+            adapter = MainAdapter(
+                this@MainFragment,
+                totalMembers,
+                it,
+            )
 
-                val formatter = SimpleDateFormat("EEE, MMM d")
-                binding.currentGameDate.text = formatter.format(event.date)
+            adapter.memberList =
+                LocalDataStateService.event.value?.participants ?: mutableListOf()
+            binding.recyclerMember.adapter = adapter
+        }
 
-                var plusMembers = 0
-                event.participants.forEach { member ->
-                    if (member.contains("1")) {
-                        plusMembers += 1
-                    } else if (member.contains("2")) {
-                        plusMembers += 2
-                    }
+        viewModel.getEvent(LocalDataStateService.name)
+        viewModel.event.observe(viewLifecycleOwner) { event ->
+            var plusMembers = 0
+            event.participants.forEach { member ->
+                if (member.contains("1")) {
+                    plusMembers += 1
+                } else if (member.contains("2")) {
+                    plusMembers += 2
                 }
-                val totalMembers = event.participants.size + plusMembers
-                binding.totalMembers.text = getString(R.string.total_members, totalMembers)
+            }
+            totalMembers = event.participants.size + plusMembers
+            binding.totalMembers.text =
+                getString(R.string.total_members, totalMembers)
 
-                val currentTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
-                val time = Calendar.getInstance().time
+            adapter = MainAdapter(
+                this@MainFragment,
+                totalMembers,
+                LocalDataStateService.price.value!!,
+            )
+            adapter.memberList = event.participants
+            binding.recyclerMember.adapter = adapter
 
-                binding.applyNewMember.setOnClickListener {
-                    if (currentTimeFormatter.format(time) > event.deadline.toString() &&
-                        (currentTimeFormatter.format(time) < event.date.toString())
-                    ) {
-                        val dialog = AlertDialog.Builder(requireContext())
-                            .setTitle("Nincs jelentkezési időszak!")
-                            .setMessage("Lejárt a jelentkezési határidő erre a játékra. \nA következő játékra jövő hét hétfőtől tudsz jelentkezni!")
-                            .setPositiveButton(R.string.ok_btn) { dialog, _ ->
-                                dialog.cancel()
-                            }
-                            .create()
+            val formatter = SimpleDateFormat("EEE, MMM d")
+            binding.currentGameDate.text = formatter.format(event.date)
 
-                        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED)
-                        dialog.show()
-                    } else {
-                        safeNavigate(MainFragmentDirections.actionMainFrToNewMemberDialogFr())
-                    }
+            val currentTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
+            val time = Calendar.getInstance().time
+
+            binding.applyNewMember.setOnClickListener {
+                if (currentTimeFormatter.format(time) > event.deadline.toString() &&
+                    (currentTimeFormatter.format(time) < event.date.toString())
+                ) {
+                    val dialog = AlertDialog.Builder(requireContext())
+                        .setTitle(getString(R.string.not_apply_time))
+                        .setMessage(getString(R.string.not_apply_time_message))
+                        .setPositiveButton(R.string.ok_btn) { dialog, _ ->
+                            dialog.cancel()
+                        }
+                        .create()
+
+                    dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED)
+                    dialog.show()
+                } else {
+                    safeNavigate(MainFragmentDirections.actionMainFrToNewMemberDialogFr())
                 }
             }
         }

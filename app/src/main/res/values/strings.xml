@@ -20,6 +20,8 @@
     <string name="plus_two">Plusz 2 főt hozok</string>
     <string name="current_date">Jelelegi időpont:</string>
     <string name="coming">Akik jönnek:</string>
-    <string name="shared_pref_key">SharedPref</string>
-    <string name="shared_pref_name_key">Name</string>
+    <string name="room_costs">Mennyibe kerültek a pályák összesen?</string>
+    <string name="count">Számol!</string>
+    <string name="not_apply_time">Nincs jelentkezési időszak!</string>
+    <string name="not_apply_time_message">"Lejárt a jelentkezési határidő erre a játékra. \nA következő játékra jövő hét hétfőtől tudsz jelentkezni!"</string>
 </resources>

@@ -1,4 +1,4 @@
-package hu.zsof.tollapps
+package hu.zsof.tollapps.util
 
 object Constants {
 
@@ -7,4 +7,10 @@ object Constants {
 
     const val MONITOR_UPDATE_REQUEST = 500
     const val REQUEST_CODE = "REQUEST_CODE"
+
+    const val SHARED_PREF_KEY = "shared_pref_key"
+    const val SHARED_PREF_USER_NAME = "shared_pref_user_name"
+    const val SHARED_PREF_SUM = "shared_pref_sum"
+
+
 }

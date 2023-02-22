@@ -18,7 +18,7 @@ class EventRepository @Inject constructor(private val apiService: ApiService) {
 
     suspend fun applyForEvent(
         name: String,
-        type: String
+        type: String,
     ): Event? {
         return try {
             apiService.applyForCurrentEvent(name, type)

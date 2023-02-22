@@ -48,9 +48,10 @@ class NewMemberDialogFragment : DialogFragment() {
                 "0"
             } else if (binding.choiceOnePlus.isChecked) {
                 "1"
-            } else "2"
+            } else {
+                "2"
+            }
         }
-        println("type $type")
 
         viewModel.applyNewMember(LocalDataStateService.name, type)
     }

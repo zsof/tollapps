@@ -10,8 +10,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import hu.zsof.tollapps.Constants
 import hu.zsof.tollapps.network.ApiService
+import hu.zsof.tollapps.util.Constants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -87,7 +87,7 @@ class InjectModule {
                     Toast.makeText(
                         context,
                         msg,
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_LONG,
                     ).show()
                 }
             }

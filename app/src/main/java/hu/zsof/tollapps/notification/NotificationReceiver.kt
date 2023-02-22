@@ -19,7 +19,6 @@ class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context != null) {
-            println("meghívódtam")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // Create the NotificationChannel
                 val name = context.getString(R.string.notification_name)
@@ -38,7 +37,9 @@ class NotificationReceiver : BroadcastReceiver() {
             val intentFlag =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
-                } else PendingIntent.FLAG_CANCEL_CURRENT
+                } else {
+                    PendingIntent.FLAG_CANCEL_CURRENT
+                }
 
             val contentIntent = PendingIntent.getActivity(context, 0, showIntent, intentFlag)
 

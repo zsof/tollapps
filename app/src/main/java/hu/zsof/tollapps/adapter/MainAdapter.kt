@@ -13,7 +13,11 @@ import hu.zsof.tollapps.databinding.ItemMemberBinding
 import hu.zsof.tollapps.network.repository.LocalDataStateService
 import javax.inject.Inject
 
-class MainAdapter @Inject constructor(private val listener: RemoveButtonClickListener) :
+class MainAdapter @Inject constructor(
+    private val listener: RemoveButtonClickListener,
+    private val totalMembers: Int,
+    private val price: Int,
+) :
     RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
     var memberList: List<String>
         get() = differ.currentList
@@ -63,10 +67,24 @@ class MainAdapter @Inject constructor(private val listener: RemoveButtonClickLis
 
             binding.removeApply.visibility = if (name.split(" ")[0] == LocalDataStateService.name) {
                 View.VISIBLE
-            } else View.INVISIBLE
+            } else {
+                View.INVISIBLE
+            }
 
             binding.removeApply.setOnClickListener {
                 listener.onRemoveBtnClicked()
+            }
+
+            val multiplier = if (name.contains("1")) {
+                2
+            } else if (name.contains("2")) {
+                3
+            } else {
+                1
+            }
+            if (price != 0) {
+                val dividedPrice = price / totalMembers
+                binding.price.text = "${(dividedPrice * multiplier)} Ft"
             }
         }
     }

@@ -11,13 +11,13 @@ interface ApiService {
 
     @POST("login")
     suspend fun login(
-        @Query("name") name: String
+        @Query("name") name: String,
     ): Response
 
     @POST("apply")
     suspend fun applyForCurrentEvent(
         @Query("name") name: String,
-        @Query("type") type: String
+        @Query("type") type: String,
     ): Event
 
     @DELETE(".")

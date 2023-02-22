@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import hu.zsof.tollapps.util.Constants
 import hu.zsof.tollapps.R
 import hu.zsof.tollapps.databinding.LoginFragmentBinding
 import hu.zsof.tollapps.network.repository.LocalDataStateService
@@ -38,12 +39,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupBindings() {
-        val sharedPref = activity?.getSharedPreferences(
-            getString(R.string.shared_pref_key),
+        val sharedPref = requireActivity().getSharedPreferences(
+            Constants.SHARED_PREF_KEY,
             Context.MODE_PRIVATE,
         )
 
-        val storedName = sharedPref?.getString(getString(R.string.shared_pref_name_key), "")
+        val storedName = sharedPref?.getString(Constants.SHARED_PREF_USER_NAME, "")
         if (!storedName.isNullOrEmpty()) {
             LocalDataStateService.name = storedName
             safeNavigate(LoginFragmentDirections.actionLoginFrToMainFr())
@@ -66,7 +67,7 @@ class LoginFragment : Fragment() {
 
                 if (sharedPref != null) {
                     with(sharedPref.edit()) {
-                        putString(getString(R.string.shared_pref_name_key), name)
+                        putString(Constants.SHARED_PREF_USER_NAME, name)
                         apply()
                     }
                 }

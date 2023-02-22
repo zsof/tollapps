@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewMemberViewModel @Inject constructor(
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
 
     fun applyNewMember(name: String, type: String) {

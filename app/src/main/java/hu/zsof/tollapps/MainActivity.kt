@@ -23,10 +23,10 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
-import hu.zsof.tollapps.Constants.MONITOR_UPDATE_REQUEST
-import hu.zsof.tollapps.Constants.REQUEST_CODE
 import hu.zsof.tollapps.databinding.ActivityMainBinding
 import hu.zsof.tollapps.notification.NotificationReceiver
+import hu.zsof.tollapps.util.Constants.MONITOR_UPDATE_REQUEST
+import hu.zsof.tollapps.util.Constants.REQUEST_CODE
 import java.util.Calendar
 
 @AndroidEntryPoint

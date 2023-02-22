@@ -8,4 +8,6 @@ object LocalDataStateService {
     var name: String = ""
 
     val event: MutableLiveData<Event> = MutableLiveData<Event>()
+
+    var price = MutableLiveData(0)
 }

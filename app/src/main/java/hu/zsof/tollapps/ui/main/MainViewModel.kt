@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     stateService: LocalDataStateService,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
 ) :
     ViewModel() {
 
